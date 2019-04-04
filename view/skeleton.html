@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title + " | 1000-LIST-NICK" if title else "1000-LIST-NICK"}}</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/skeleton.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    % if get("css", None):
+    <link rel="stylesheet" href="/css/{{css}}}.css">
+    % end
+    % if get("js", None):
+    <script src="/js/{{js}}.js"></script>
+    % end
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand gradient-text nav-brand" href="/">1000-LIST-NICK</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {{'active' if title == 'NovatorWEB' else ''}}">
+                <a class="nav-link" href="/novatorweb">NovatorWEB</a>
+            </li>
+            <li class="nav-item {{'active' if title == 'Блог' else ''}}">
+                <a class="nav-link" href="/blog">Блог</a>
+            </li>
+            % if is_admin:
+            <li class="nav-item">
+                <a class="nav-link gradient-text" href="/admin">Админка</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-danger" href="/logout">Выйти</a>
+            </li>
+            % end
+        </ul>
+    </div>
+</nav>
+<div class="container">
+% include(including_page, *args, **kwargs)
+</div>
+</body>
+</html>

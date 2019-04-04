@@ -1,0 +1,19 @@
+@import url(https://fonts.googleapis.com/css?family=Rubik+One&subset=latin,cyrillic);
+:root {
+    --gradient: linear-gradient(45deg, #0B2349 33%, #0D61BC 66%, #8AA9D6);
+}
+body {
+    /*font-size: 66.25%;*/
+}
+.gradient-text {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /*color: #0B2349;*/
+}
+
+.gradient-btn {
+    background: var(--gradient);
+    color: var(--white);
+    border: none;
+}
