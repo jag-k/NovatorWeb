@@ -1,5 +1,5 @@
 # /usr/bin/python3
-import functools
+from functools import wraps
 from os.path import join
 from hashlib import pbkdf2_hmac
 from sys import stderr
@@ -14,6 +14,24 @@ try:
 except ImportError:
     print("Please, install ujson module (pip3 install ujson)", file=stderr)
     from json import load, dump
+
+app = bottle.Bottle()
+bottle.ERROR_PAGE_TEMPLATE = open("view/error.html").read()
+
+
+@wraps(bottle.Bottle.route)
+def route(p=None, method='GET', callback=None, name=None,
+          apply=None, skip=None, **config):
+
+    def _(func):
+        app.route(p, method, callback, name,
+                  apply, skip, **config)(func)
+
+        path = (p + '/').replace('//', '/')
+        app.route(path, method, callback, name,
+                         apply, skip, **config)(func)
+        return func
+    return _
 
 
 # #   ADMINS   # #
@@ -58,41 +76,68 @@ def admin_page(route, method="GET"):
     return _
 
 
+# #   BLOG   # #
+POSTS_FILE = "data/posts.json"
+posts = load(open(POSTS_FILE))  # type: List[Dict[str, str]]
+
+
+@admin_page('/blog/new', ["GET", "POST"])
+def new_post():
+    if request.method == "POST":
+        print(request.params)
+        return redirect('/blog')
+    return admin_temp('new_blog', "Новый пост в блоге")
+
+
 # #   MAIN   # #
-app = bottle.Bottle()
-
-
-def template(source, title="", extension=".html", *args, **kwargs):
-    return bottle.template("view/skeleton.html", title=title,
+def template(source, template_title="", extension=".html", skeleton="view/skeleton.html", including_page=None, *args,
+             **kwargs):
+    return bottle.template(skeleton, title=template_title,
                            is_admin=is_hash_admin(request.get_cookie(ADMIN_COOKIE_KEY, None, ADMIN_COOKIE_SECRET)),
-                           including_page=join("view", source + extension),
+                           including_page=including_page or join("view", source + extension),
                            args=args, kwargs=kwargs)
 
 
-@app.route("/<file:path>")
-def static(file):
-    return bottle.static_file(file, "./public")
+def admin_temp(source, title="", extension=".html", *args, **kwargs):
+    return template(join("admin", source), title, extension, *args, **kwargs)
 
 
-@app.route("/")
+@route("/")
 def main_page():
     return template("main",
+                    posts=posts
                     )
 
 
-@app.route("/login", method=["GET", "POST"])
+@route("/blog")
+def blog():
+    return template('blog', "Блог", posts=posts)
+
+
+@route("/blog/<post>")
+def blog_post(post=""):
+    p = list(filter(lambda x: x['title'] == post, posts))
+    if not p:
+        return bottle.HTTPError(404, "Пост блога не найден")
+    return template('blog_post', p[0]['title'] + " (Блог)", **p[0])
+
+
+@route("/login", method=["GET", "POST"])
 def login():
-    err = False
-    if request.method.lower() == "post":
+    alert = {}
+    if request.method == "POST":
         h = hash_admin(**request.params)
         if is_hash_admin(h):
             response.set_cookie(ADMIN_COOKIE_KEY, h, ADMIN_COOKIE_SECRET, max_age=604800, httponly=True)
             return redirect("/admin")
         else:
-            err = True
+            alert = {
+                'content': "Вы ввели не правильный логин или пароль! Повторите снова",
+                'type': "danger"
+            }
     return template("login",
-                    title="Вход в админку",
-                    err=err
+                    template_title="Вход в админку",
+                    alert=alert
                     )
 
 
@@ -104,9 +149,14 @@ def logout():
 
 @admin_page("/")
 def admin_page():
-    return template("admin/main",
-                    title="Админка"
-                    )
+    return admin_temp("main",
+                      title="Админка"
+                      )
+
+
+@route("/<file:path>")
+def static(file):
+    return bottle.static_file(file, "./public")
 
 
 if __name__ == '__main__':

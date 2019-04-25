@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{"Ошибка " + e.status + " | 1000-LIST-NICK"}}</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/skeleton.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<body class="d-flex flex-column h-100">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand gradient-text nav-brand" href="/">1000-LIST-NICK</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/novatorweb">NovatorWEB</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/blog">Блог</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<main>
+  <div class="container mt-4">
+    <h3 class="text-danger">Ошибка {{e.status}}</h3>
+    <p class="text-body">{{e.body}}</p>
+    <br>
+    <div class="row">
+      <div class="col-sm-4 my-2">
+        <input type="button" value="Вернуться назад" class="btn btn-primary gradient-btn" onclick="history.back()">
+      </div>
+      <div class="col-sm-4 my-2">
+        <a class="btn btn-primary gradient-btn" href="/">Вернуться на главную</a>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer mt-auto py-3">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <div class="col-6 contacts">
+        <span>Контакты:</span><br>
+        <div class="row">
+          <div class="col-sm-7">
+            <a href="https://goo.gl/maps/W6qguK6DfkxEm8Mm7">Пенза, Окружная 3б, 231 кб.</a><br>
+            <a href="mailto:omip1000@mail.ru">omip1000@mail.ru</a><br></div>
+          <div class="col">
+            <a href="tel:+78412636780" style="text-wrap: none">+7 (8412) 63-67-80</a><br>
+            <a href="tel:+78412636781">+7 (8412) 63-67-81</a><br></div>
+        </div>
+      </div>
+      <div class="col-6 media-links text-right">
+      <a href="https://www.youtube.com/channel/UC21S9sVTzKc0__CgifzJlow">
+        <i class="fab fa-youtube fa-lg"></i>
+      </a>
+      <a href="https://vk.com/jag_konon">
+        <i class="fab fa-vk fa-lg"></i>
+      </a>
+      <a href="https://instagram.com/jag_k_">
+        <i class="fab fa-instagram fa-lg"></i>
+      </a>
+      <a href="https://github.com/jag-k/NowatorWeb">
+        <i class="fab fa-github fa-lg"></i>
+      </a>
+      <a href="https://www.facebook.com/1000listnick/">
+        <i class="fab fa-facebook fa-lg"></i>
+      </a>
+    </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

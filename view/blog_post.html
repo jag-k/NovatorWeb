@@ -1,0 +1,9 @@
+<h3 class="m-4">{{title}}</h3>
+
+% if get('image'):
+<img src="/images/{{img}}" alt="{{title}}">
+% end
+
+% for i in content.split('\n'):
+<p>{{i}}</p>
+% end
