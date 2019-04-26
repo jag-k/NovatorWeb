@@ -48,12 +48,10 @@ body {
   text-decoration-line: none;
 }
 
-.contacts > .row > div > a {
-  text-decoration: none;
+.contacts  > a {
   color: #0D61BC;
 }
 
-.contacts > .row > div > a:hover {
-  text-decoration-line: none;
+.contacts > a:hover {
   color: #8AA9D6;
 }
