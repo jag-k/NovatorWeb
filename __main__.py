@@ -51,7 +51,7 @@ def new_post():
 
 
 # #   MAIN   # #
-BLOG_POSTS = 1
+BLOG_POSTS = 7
 
 
 @route("/")
@@ -64,7 +64,20 @@ def main_page():
 
 @route("/blog")
 def blog():
-    return template('blog', "Блог", posts=posts)
+    cur_page = request.params.get("page")
+    max_pages = len(posts) // BLOG_POSTS + bool(len(posts) % BLOG_POSTS)
+    if cur_page is not None and (not (cur_page.isdigit() and int(cur_page) > 0)) or cur_page == "1":
+        return redirect('/blog')
+    else:
+        cur_page = min(int(cur_page or '1'), max_pages)
+    p = posts[(cur_page-1)*BLOG_POSTS:cur_page*BLOG_POSTS]
+    pagination = {
+        "cur_page": cur_page,
+        "max_pages": max_pages,
+        "displayed_pages": 5
+    }
+
+    return template('blog', "Блог", posts=p, pagination=pagination)
 
 
 @route("/blog/<post>")
