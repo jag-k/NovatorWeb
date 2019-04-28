@@ -55,3 +55,7 @@ body {
 .contacts > a:hover {
   color: #8AA9D6;
 }
+
+.card-img-top {
+  height: 200px;
+}

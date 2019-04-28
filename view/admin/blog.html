@@ -1,0 +1,41 @@
+<h3>Посты в блоге
+  % if posts:
+    <span class="badge badge-pill badge-primary">{{len(posts)}}</span>
+  % end
+</h3>
+<br>
+% if posts:
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Заголовок</th>
+      <th scope="col">Содержание</th>
+      <th scope="col">Редактировать</th>
+      <th scope="col">Удалить</th>
+    </tr>
+  </thead>
+  <tbody>
+  % for post in posts:
+    <tr>
+      <th scope="row">{{post['title']}}</th>
+      <td>{{post['short']}}</td>
+      <td>
+        <a href="/admin/blog/edit?id={{post['title']}}">
+          Редактировать <i class="far fa-edit"></i>
+        </a>
+      </td>
+      <td>
+        <a href="/admin/blog/delete?id={{post['title']}}" class="text-danger">
+          Удалить <i class="far fa-trash-alt"></i>
+        </a>
+      </td>
+    </tr>
+  % end
+  </tbody>
+</table>
+% else:
+<span class="h4">Постов нет:</span>
+% end
+<div class="{{'text-right' if posts else 'd-inline'}}">
+  <a href="/admin/blog/new" class="btn btn-success"><i class="far fa-newspaper"></i> Создать новый пост</a>
+</div>

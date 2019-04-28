@@ -11,25 +11,25 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="/js/bootstrap.min.js"></script>
 </head>
-<body class="d-flex flex-column h-100">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand gradient-text nav-brand" href="/">1000-LIST-NICK</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/novatorweb">NovatorWEB</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/blog">Блог</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<body class="d-flex flex-column">
 <main>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand gradient-text nav-brand" href="/">1000-LIST-NICK</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/novatorweb">NovatorWEB</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blog">Блог</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
   <div class="container mt-4">
     <h3 class="text-danger">Ошибка {{e.status}}</h3>
     <p class="text-body">{{e.body}}</p>

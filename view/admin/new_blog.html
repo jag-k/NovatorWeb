@@ -1,22 +1,23 @@
+% post = get('post', {})
 <h3>Новый пост</h3>
-<form action="/admin/blog/new" method="POST" enctype="multipart/form-data">
+<form action="/admin/blog/{{'edit?id=' + post.get('title') if post else 'new'}}" method="POST" enctype="multipart/form-data">
   <div class="form-group">
     <label for="title">Заголовок</label>
-    <input type="text" class="form-control" id="title" name="title" placeholder="Заголовок" required>
+    <input type="text" class="form-control" id="title" name="title" placeholder="Заголовок" value="{{post.get('title', '')}}" required>
   </div>
 
   <div class="form-group">
     <label for="image">Изображение</label>
     <input name="image" id="image" type="file" for="preview" accept="image/*" onchange="loadFile(event, this)">
     <br>
-    <img class="preview mx-3" id="preview" alt="" src="">
+    <img class="preview mx-3{{' img-thumbnail' if post.get('img') else ''}}" id="preview" alt="" src="{{post.get('img') or ''}}">
   </div>
 
 
   <div class="form-group">
     <label for="blog_post">Сама статья <a href="https://ru.wikipedia.org/wiki/Markdown"
                                           class="badge badge-pill badge-light">(используется Markdown)</a></label>
-    <textarea class="form-control" id="blog_post" name="blog_post" placeholder="Статья (можно 'и нужно' использовать Markdown)" rows="6" required></textarea>
+    <textarea class="form-control" id="blog_post" name="blog_post" placeholder="Статья (можно 'и нужно' использовать Markdown)" rows="6" required>{{post.get('raw_content', '')}}</textarea>
   </div>
 
   <button type="submit" class="btn gradient-btn">Отправить</button>

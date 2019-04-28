@@ -3,11 +3,11 @@
 Здесь ты можешь реализовать свои идеи, раскрыть таланты и найти новых друзей!</p>
 <a class="ml-4 btn btn-primary gradient-btn" href="//1000-list-nick.com/about">Подробнее</a>
 <br>
-<h3 class="m-4">Новости</h3>
+<h3 class="m-4">Последние новости <a href="/blog"><i class="fas fa-link fa-sm"></i></a></h3>
 
 % if get("posts"):
 <div class="row">
-  % for i in posts[:3]:
+  % for i in posts:
   <div class="col-sm-6 mb-3">
     <div class="card mb-3">
       % if i['img']:
