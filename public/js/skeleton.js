@@ -1,9 +1,12 @@
 function loadFile(event, input) {
     let output = document.getElementById(input.getAttribute('for'));
+    document.querySelectorAll('.custom-file-label[for="' + input.id + '"]').forEach(function (value) {
+        value.innerHTML = event.target.files[0].name
+    });
+
     output.classList.add('img-thumbnail');
+    output.classList.add('mb-3');
     output.src = URL.createObjectURL(event.target.files[0]);
-    console.log(output.src);
-    console.log(output)
 }
 
 function loadingButton(btn) {

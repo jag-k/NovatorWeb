@@ -14,13 +14,13 @@ body {
   /*color: #0B2349;*/
 }
 
-.gradient-btn {
+.btn-gradient {
   background: var(--gradient);
   color: var(--white);
   border: none;
 }
 
-.gradient-btn:hover {
+.btn-gradient:hover {
   color: var(--white);
 }
 

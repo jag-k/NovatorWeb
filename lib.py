@@ -95,7 +95,7 @@ def admin_route(url, method="GET"):
 
 
 def admin_temp(source, title="", extension=".html", *args, **kwargs):
-    return template(join("admin", source), title or "Админка", extension, *args, **kwargs)
+    return template(join("admin", source), title + " (Админка)" if title else "Админка", extension, *args, **kwargs)
 
 
 # #   BLOG   # #
@@ -104,15 +104,17 @@ posts = load(open(POSTS_FILE))  # type: List[Dict[str, str]]
 
 
 # #   MAIN   # #
-def template(source, template_title="", extension=".html", skeleton="view/skeleton.html", including_page=None,
+def template(source, template_title="", extension=".html", including_page=None,
              alert: Alert = None, *args, **kwargs):
     d = loads(request.get_cookie("kwargs", "{}", ADMIN_COOKIE_SECRET))
+    if alert:
+        alert = alert.conv
     if d:
         response.delete_cookie("kwargs", path='/')
         if 'alert' in d:
             alert = loads(d['alert'])
         kwargs.update(d)
-    return bottle.template(skeleton, title=template_title,
+    return bottle.template("view/skeleton.html", title=template_title,
                            is_admin=is_hash_admin(request.get_cookie(ADMIN_COOKIE_KEY, None, ADMIN_COOKIE_SECRET)),
                            including_page=including_page or join("view", source + extension),
                            args=args, alert=alert, kwargs=kwargs)

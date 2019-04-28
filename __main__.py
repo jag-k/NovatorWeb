@@ -18,11 +18,18 @@ def blog_short(t):
 
 
 # #   ADMIN ROUTING   # #
-@admin_route("/")
+@admin_route("/", method=[GET, POST])
 def admin_page():
+    alert = None
+    if request.method == POST:
+        files = []
+        for file in request.files.values():   # type: bottle.FileUpload
+            file.save("./public/images/" + file.raw_filename, True)
+            files.append(file.raw_filename)
+        return redirect("/admin", alert=Alert("Файл(ы) (%s) успешно сохранен(ы)" % ', '.join(files)))
     return admin_temp(
         "main",
-        title="Админка",
+        alert=alert
     )
 
 
@@ -61,7 +68,7 @@ def edit_post():
         files = dict(request.files)  # type: Dict[str, bottle.FileUpload]
 
         if not files:
-            res['img'] = None
+            res['img'] = post.get('img')
 
         else:
             file = files['image']

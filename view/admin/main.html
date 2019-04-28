@@ -1,1 +1,21 @@
-<h1>Admin Page</h1>
+<h1>Админ-панель</h1>
+<div>
+  <a href="/admin/blog" class="btn btn-gradient">Перейти в блог</a>
+  <a href="/admin/nowatorweb" class="btn btn-gradient">Перейти в NowatorWEB</a>
+</div>
+<br>
+<h4>Загрузить изображение на сервер</h4>
+<form action="/admin" method="POST" enctype="multipart/form-data">
+  <div class="form-group">
+    <div class="input-group">
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" name="image" id="image" for="preview" accept="image/*" onchange="loadFile(event, this)">
+        <label class="custom-file-label" for="image" data-browse="Выберите изображение">Изображение (если имена совпадают, то изображение будет переписано)</label>
+      </div>
+    </div>
+  </div>
+  <img class="preview mx-3" id="preview" alt="" src="">
+  <br>
+
+  <button type="submit" class="btn btn-success">Отправить</button>
+</form>

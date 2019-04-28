@@ -10,7 +10,7 @@
     <label for="image">Изображение</label>
     <input name="image" id="image" type="file" for="preview" accept="image/*" onchange="loadFile(event, this)">
     <br>
-    <img class="preview mx-3{{' img-thumbnail' if post.get('img') else ''}}" id="preview" alt="" src="{{post.get('img') or ''}}">
+    <img class="preview mx-3{{' img-thumbnail' if post.get('img') else ''}}" id="preview" alt="" src="{{'/images/' + post.get('img') if post.get('img') else ''}}">
   </div>
 
 
@@ -20,5 +20,5 @@
     <textarea class="form-control" id="blog_post" name="blog_post" placeholder="Статья (можно 'и нужно' использовать Markdown)" rows="6" required>{{post.get('raw_content', '')}}</textarea>
   </div>
 
-  <button type="submit" class="btn gradient-btn">Отправить</button>
+  <button type="submit" class="btn btn-gradient">Отправить</button>
 </form>

@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "title":"Заголовок",
+    "img":"Заголовок.jpg",
+    "raw_content":"CSacsa",
+    "content":"<p>CSacsa<\/p>",
+    "short":"CSacsa"
+  }
+]

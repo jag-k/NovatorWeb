@@ -28,11 +28,11 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item {{'active' if title == 'NovatorWEB' else ''}}">
-        <a class="nav-link" href="/novatorweb">NovatorWEB</a>
+      <li class="nav-item{{' active' if 'NovatorWEB' in title else ''}}">
+        <a class="nav-link" href="{{'/admin' if 'Админка' in title else ''}}/novatorweb">NovatorWEB</a>
       </li>
-      <li class="nav-item {{'active' if title == 'Блог' else ''}}">
-        <a class="nav-link" href="/blog">Блог</a>
+      <li class="nav-item{{' active' if 'Блог' in title else ''}}">
+        <a class="nav-link" href="{{'/admin' if 'Админка' in title else ''}}/blog">Блог</a>
       </li>
       % if is_admin:
       <li class="nav-item">
@@ -45,7 +45,7 @@
     </ul>
   </div>
 </nav>
-  <div class="container mt-4">
+  <div class="container my-4">
     % include("view/alert.html", alert=alert)
     % include(including_page, *args, **kwargs)
   </div>
