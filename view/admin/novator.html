@@ -52,13 +52,20 @@
 <form action="/admin/novatorweb/timer" method="post" class="mb-4">
   <div class="form-group">
     <label for="date">Дата окончания</label>
-    <input type="date" class="form-control" id="date" name="date" aria-describedby="emailHelp" placeholder="Дата" required>
+    <input type="date" value="{{timer.get('raw_date', '')}}" class="form-control" id="date" name="date" aria-describedby="emailHelp" placeholder="Дата" required>
   </div>
   <div class="form-group">
     <label for="time">Время окончания</label>
-    <input type="time" class="form-control" id="time" name="time" placeholder="Время" required>
+    <input type="time" value="{{timer.get('raw_time', '')}}" class="form-control" id="time" name="time" placeholder="Время" required>
   </div>
-  <button type="submit" class="btn btn-gradient">Отправить</button>
+  <div class="row">
+    <div class="col">
+      <button type="submit" class="btn mx-auto btn-gradient">Отправить</button>
+    </div>
+    <div class="col text-right">
+      <a href="/admin/novatorweb/reset_timer" class="mx-auto btn btn-danger">Сбросить таймер</a>
+    </div>
+  </div>
 </form>
 
 <h4>Файл положения о конкурсе</h4>

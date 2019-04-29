@@ -125,6 +125,14 @@ except FileNotFoundError:
         file.write('{}')
     competition = load(open(COMPETITION_FILE))  # type: Dict[str, str]
 
+TIMER_FILE = "data/timer.json"
+try:
+    timer = load(open(TIMER_FILE))  # type: Dict[str, str]
+except FileNotFoundError:
+    with open(TIMER_FILE, 'w') as file:
+        file.write('{}')
+    timer = load(open(TIMER_FILE))  # type: Dict[str, str]
+
 
 # #   MAIN   # #
 def template(source, template_title="", extension=".html", including_page=None,

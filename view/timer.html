@@ -1,0 +1,59 @@
+% if get('timer'):
+<script>
+    // НАСТРОЙКИ ТАЙМЕРА
+    // ВРЕМЯ КОНЦА СДАЧИ ПРОЕКТОВ
+    const endYear    = {{timer['endYear']}},  // ГОД
+          endMonth   = {{timer['endMonth']}},  // МЕСЯЦ
+          endDay     = {{timer['endDay']}},  // ДЕНЬ
+          endHour    = {{timer['endHour']}},  // ЧАС
+          endMinutes = {{timer['endMinutes']}},  // МИНУТА
+          endSeconds = 0;   // СЕКУНДА
+
+    // СООБЩЕНИЯ
+    const startMessage    = "До окнончания приёма заявок осталось:",
+          endMessage      = "Приём заявок завершился";
+</script>
+<script src="/js/timer.js"></script>
+<div class="col-md my-5">
+  <div class="timer">
+    <div class="timer-header h3" id="timer-header">
+      <!--До xакатона осталось:-->
+    </div>
+    <div class="timer-block" id="timer-block">
+      <div class="time-block text-center days">
+        <div class="numbers" id="number-days">
+          <!--00-->
+        </div>
+        <div class="sub" id="string-days">
+          <!--дней-->
+        </div>
+      </div>
+      <div class="time-block text-center hours">
+        <div class="numbers" id="number-hours">
+          <!--00-->
+        </div>
+        <div class="sub" id="string-hours">
+          <!--часов-->
+        </div>
+      </div>
+      <div class="time-block text-center minutes">
+        <div class="numbers" id="number-minutes">
+          <!--00-->
+        </div>
+        <div class="sub" id="string-minutes">
+          <!--минут-->
+        </div>
+      </div>
+      <div class="time-block text-center second">
+        <div class="numbers" id="number-seconds">
+          <!--00-->
+        </div>
+        <div class="sub" id="string-seconds">
+          <!--секунд-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>startTimer()</script>
+% end

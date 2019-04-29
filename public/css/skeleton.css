@@ -83,3 +83,36 @@ body {
 .card-img-top {
   height: 200px;
 }
+
+/*TIMER*/
+.timer{
+    margin-bottom: 15px;
+}
+
+.timer-block{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 50px;
+}
+
+.time-block{
+    margin: 0 10px 40px;
+    width: 90px;
+    height: 80px;
+    display: inline-block;
+    align-items: center;
+
+}
+
+.timer-header{
+    text-align: center
+}
+
+.numbers{
+    padding: 5px;
+    text-align: center;
+}
+.sub{
+    font-size: 25px;
+}

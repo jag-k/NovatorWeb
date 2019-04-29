@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from lib import *
 from markdown import markdown
 
@@ -146,7 +148,7 @@ DOC_TYPES = {
 
 @admin_route('/novatorweb')
 def admin_novator():
-    return admin_temp('novator', "NovatorWEB", directions=directions, competition=competition)
+    return admin_temp('novator', "NovatorWEB", directions=directions, competition=competition, timer=timer)
 
 
 @admin_route('/novatorweb/delete')
@@ -260,6 +262,37 @@ def admin_competition():
     return redirect('/admin/novatorweb', alert=Alert("Положение успешно загруженно!"))
 
 
+@admin_route('/novatorweb/timer', method=POST)
+def novator_timer():
+    data = request.params  # type: bottle.FormsDict
+    if data.get('date'):
+        timer['endYear'], timer['endMonth'], timer['endDay'] = map(int, data.get('date').split('-'))
+        timer['raw_date'] = data.get('date')
+
+    if data.get('time'):
+        timer['endHour'], timer['endMinutes'] = map(int, data.get('time').split(':'))
+        timer['raw_time'] = data.get('time')
+
+    pprint(timer)
+    dump(timer, open(TIMER_FILE, 'w'), ensure_ascii=False, indent=2)
+    return redirect('/admin/novatorweb',
+                    alert=Alert(
+                        "Таймер успешно установлен установлен на "
+                        "%(endDay)s-%(endMonth)s-%(endYear)s %(endHour)s:%(endMinutes)s" % timer
+                    ))
+
+
+@admin_route('/novatorweb/reset_timer')
+def novator_reset_timer():
+    global timer
+    timer = {}
+    dump(timer, open(TIMER_FILE, 'w'), ensure_ascii=False, indent=2)
+    return redirect('/admin/novatorweb',
+                    alert=Alert(
+                        "Таймер успешно сброшен"
+                    ))
+
+
 # #   MAIN   # #
 @route("/")
 def main_page():
@@ -297,7 +330,7 @@ def blog_post(post=""):
 
 @route('/novatorweb')
 def novator():
-    return template('novatorweb', "NovatorWEB", directions=directions, competition=competition)
+    return template('novatorweb', "NovatorWEB", directions=directions, competition=competition, timer=timer)
 
 
 @route('/novatorweb/<direction_id>')
