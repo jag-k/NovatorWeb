@@ -3,14 +3,25 @@
 <form action="/admin/blog/{{'edit?id=' + post.get('title') if post else 'new'}}" method="POST" enctype="multipart/form-data">
   <div class="form-group">
     <label for="title">Заголовок</label>
-    <input type="text" class="form-control" id="title" name="title" placeholder="Заголовок" value="{{post.get('title', '')}}" required>
+    <input type="text" class="form-control" id="title" name="title" placeholder="Заголовок" value="{{post.get('title', '')}}" autocomplete="off" required>
+  </div>
+
+  <div class="from-group mb-2">
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="del_image" name="del_image">
+      <label class="custom-control-label" for="del_image">Удалить/не загружать изображение к посту</label>
+    </div>
   </div>
 
   <div class="form-group">
-    <label for="image">Изображение</label>
-    <input name="image" id="image" type="file" for="preview" accept="image/*" onchange="loadFile(event, this)">
+    <div class="input-group">
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" name="image" id="image" for="preview" accept="image/*" onchange="loadImage(event, this)">
+        <label class="custom-file-label" for="image" data-browse="Выберите изображение">Изображение</label>
+      </div>
+    </div>
     <br>
-    <img class="preview mx-3{{' img-thumbnail' if post.get('img') else ''}}" id="preview" alt="" src="{{'/images/' + post.get('img') if post.get('img') else ''}}">
+    <img class="preview mx-3" id="preview" alt="" src="">
   </div>
 
 

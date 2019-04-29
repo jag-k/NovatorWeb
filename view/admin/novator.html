@@ -1,0 +1,77 @@
+<h3>Направления в NovatorWEB
+  % if directions:
+    <span class="badge badge-pill badge-primary">{{len(directions)}}</span>
+  % end
+</h3>
+<br>
+% if directions:
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th scope="col"><i class="fas fa-link"></i></th>
+      <th scope="col">Иконка</th>
+      <th scope="col">Название</th>
+      <th scope="col">Редактировать</th>
+      <th scope="col">Удалить</th>
+    </tr>
+  </thead>
+  <tbody>
+  % for direction in directions:
+    <tr>
+      <th scope="row"><a href="/novatorweb/{{direction['name']}}"><i class="fas fa-external-link-alt"></i></a></th>
+      <td>
+        % if direction['img']:
+          <img src="/images/novator/{{direction['img']}}" alt="{{direction['name']}}" class="square-img-50">
+        % else:
+         —
+        % end
+      </td>
+      <th>{{direction['name']}}</th>
+      <td>
+        <a href="/admin/novatorweb/edit?id={{direction['name']}}">
+          Редактировать <i class="far fa-edit"></i>
+        </a>
+      </td>
+      <td>
+        <a href="/admin/novatorweb/delete?id={{direction['name']}}" class="text-danger">
+          Удалить <i class="far fa-trash-alt"></i>
+        </a>
+      </td>
+    </tr>
+  % end
+  </tbody>
+</table>
+% else:
+<span class="h4">Направлений нет:</span>
+% end
+<div class="mb-4{{' text-right' if directions else ' d-inline'}}">
+  <a href="/admin/novatorweb/new" class="btn btn-success"><i class="far fa-compass"></i> Создать новое направление</a>
+</div>
+
+<h4>Таймер окончания приёма заявок</h4>
+<form action="/novator/timer" method="post" class="mb-4">
+  <div class="form-group">
+    <label for="date">Дата окончания</label>
+    <input type="date" class="form-control" id="date" name="date" aria-describedby="emailHelp" placeholder="Дата" required>
+  </div>
+  <div class="form-group">
+    <label for="time">Время окончания</label>
+    <input type="time" class="form-control" id="time" name="time" placeholder="Время" required>
+  </div>
+  <button type="submit" class="btn btn-gradient">Отправить</button>
+</form>
+
+<h4>Файл положения о конкурсе</h4>
+<form action="/novator/competition" method="POST" enctype="multipart/form-data">
+
+  <label for="competition">Положение</label>
+  <div class="input-group mb-3">
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" name="doc" id="competition" accept="application/zip,application/pdf,application/msword" onchange="loadFile(event, this)" {{'' if get('competition') else 'required'}}>
+      <label class="custom-file-label" for="competition" data-browse="Выберите документ">
+        {{competition if get('competition') else 'Документ о положении'}}
+      </label>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-gradient">Отправить</button>
+</form>

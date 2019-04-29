@@ -8,6 +8,7 @@
 <table class="table table-striped table-hover">
   <thead>
     <tr>
+      <th scope="col"><i class="fas fa-link"></i></th>
       <th scope="col">Заголовок</th>
       <th scope="col">Содержание</th>
       <th scope="col">Редактировать</th>
@@ -17,7 +18,8 @@
   <tbody>
   % for post in posts:
     <tr>
-      <th scope="row">{{post['title']}}</th>
+      <th scope="row"><a href="/blog/{{post['title']}}"><i class="fas fa-external-link-alt"></i></a></th>
+      <th>{{post['title']}}</th>
       <td>{{post['short']}}</td>
       <td>
         <a href="/admin/blog/edit?id={{post['title']}}">

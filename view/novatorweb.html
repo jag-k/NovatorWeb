@@ -1,0 +1,15 @@
+<h1 class="d-block text-center">NovatorWEB</h1>
+<div class="row">
+  % for d in directions:
+  <div class="col-sm-3 mx-auto text-center my-3 direction">
+    <a href="/novatorweb/{{d['name']}}">
+      % if d['img']:
+      <img src="/images/novator/{{d['img']}}" alt="" class="square-img-200">
+      % else:
+        % include('view/svg_gradient.html', classes='square-img-200')
+      % end
+      <span class="text-center d-block h4">{{d['name']}}</span>
+    </a>
+  </div>
+  % end
+</div>

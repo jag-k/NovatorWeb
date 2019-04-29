@@ -1,7 +1,7 @@
 <h1>Админ-панель</h1>
-<div>
-  <a href="/admin/blog" class="btn btn-gradient">Перейти в блог</a>
-  <a href="/admin/nowatorweb" class="btn btn-gradient">Перейти в NowatorWEB</a>
+<div class="row">
+  <a href="/admin/novatorweb" class="btn btn-gradient col-auto m-auto w-25">Перейти в NovatorWEB</a>
+  <a href="/admin/blog" class="btn btn-gradient col-auto m-auto w-25">Перейти в блог</a>
 </div>
 <br>
 <h4>Загрузить изображение на сервер</h4>
@@ -9,8 +9,8 @@
   <div class="form-group">
     <div class="input-group">
       <div class="custom-file">
-        <input type="file" class="custom-file-input" name="image" id="image" for="preview" accept="image/*" onchange="loadFile(event, this)">
-        <label class="custom-file-label" for="image" data-browse="Выберите изображение">Изображение (если имена совпадают, то изображение будет переписано)</label>
+        <input type="file" class="custom-file-input" name="image" id="image" for="preview" accept="image/*" onchange="loadImage(event, this)">
+        <label class="custom-file-label" for="image" data-browse="Выберите изображение">Если имена совпадают, то изображение будет переписано</label>
       </div>
     </div>
   </div>

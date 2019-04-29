@@ -79,7 +79,7 @@ dump(ADMINS, open(ADMINS_FILE, 'w'), indent=2)
 
 ADMIN_LOGIN_ROUTE = "/login"
 ADMIN_COOKIE_KEY = "user"
-ADMIN_COOKIE_SECRET = "adminSecretForNowator"
+ADMIN_COOKIE_SECRET = "adminSecretForNovator"
 
 
 def admin_route(url, method="GET"):
@@ -100,7 +100,21 @@ def admin_temp(source, title="", extension=".html", *args, **kwargs):
 
 # #   BLOG   # #
 POSTS_FILE = "data/posts.json"
-posts = load(open(POSTS_FILE))  # type: List[Dict[str, str]]
+try:
+    posts = load(open(POSTS_FILE))  # type: List[Dict[str, str]]
+except FileNotFoundError:
+    with open(POSTS_FILE, 'w').close() as file:
+        file.write('[]')
+    posts = load(open(POSTS_FILE))  # type: List[Dict[str, str]]
+
+# #   NOWATORWEB  # #
+DIRECTIONS_FILE = "data/directions.json"
+try:
+    directions = load(open(DIRECTIONS_FILE))  # type: List[Dict[str, str]]
+except FileNotFoundError:
+    with open(DIRECTIONS_FILE, 'w') as file:
+        file.write('[]')
+    directions = load(open(DIRECTIONS_FILE))  # type: List[Dict[str, str]]
 
 
 # #   MAIN   # #

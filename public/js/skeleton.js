@@ -1,12 +1,20 @@
-function loadFile(event, input) {
+function loadImage(event, input) {
     let output = document.getElementById(input.getAttribute('for'));
-    document.querySelectorAll('.custom-file-label[for="' + input.id + '"]').forEach(function (value) {
-        value.innerHTML = event.target.files[0].name
-    });
+    loadFile(event, input);
 
     output.classList.add('img-thumbnail');
     output.classList.add('mb-3');
+    output.classList.remove('hide');
     output.src = URL.createObjectURL(event.target.files[0]);
+}
+
+function loadFile(event, input) {
+    console.log(event);
+    console.log(input);
+    document.querySelectorAll('.custom-file-label[for="' + input.id + '"]').forEach(function (value) {
+        console.log(value);
+        value.innerHTML = event.target.files[0].name
+    });
 }
 
 function loadingButton(btn) {
@@ -21,7 +29,7 @@ document.querySelectorAll('button.btn[type=submit]').forEach(function (elem) {
     elem.setAttribute('onclick', "loadingButton(this)")
 });
 
-document.querySelectorAll("label").forEach(function (elem) {
+document.querySelectorAll("label:not(.custom-file-label)").forEach(function (elem) {
     let for_id = elem.getAttribute('for');
     if (for_id && document.getElementById(for_id).required) {
         elem.innerHTML += ' <span class="text-danger">*</span>'

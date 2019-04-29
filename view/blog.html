@@ -9,7 +9,7 @@
       % if i['img']:
       <img src="images/{{i['img']}}" class="card-img-top" alt="{{i['title']}}">
       % else:
-        % include('view/svg_gradient.html', *args, **kwargs)
+        % include('view/svg_gradient.html', classes="card-img-top", *args, **kwargs)
       % end
       <div class="card-body">
         <h5 class="card-title">{{i['title']}}</h5>

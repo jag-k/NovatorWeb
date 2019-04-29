@@ -33,6 +33,10 @@ def admin_page():
     )
 
 
+"""BLOG"""
+BLOG_POSTS = 7
+
+
 @admin_route("/blog")
 def admin_blog():
     return admin_temp("blog", "Блог", posts=posts)
@@ -47,7 +51,7 @@ def delete_post():
         return redirect('/admin/blog', alert=alert)
 
     del posts[post_ids.index(post_id)]
-    dump(posts, open(POSTS_FILE, 'w'))
+    dump(posts, open(POSTS_FILE, 'w'), ensure_ascii=False, indent=2)
     return redirect('/admin/blog', alert=Alert("Пост успешно удалён"))
 
 
@@ -67,7 +71,10 @@ def edit_post():
         res = {"title": params['title']}
         files = dict(request.files)  # type: Dict[str, bottle.FileUpload]
 
-        if not files:
+        if params.get('del_image'):
+            res['img'] = None
+
+        elif not files:
             res['img'] = post.get('img')
 
         else:
@@ -103,7 +110,7 @@ def new_post():
         res = {"title": params['title']}
         files = dict(request.files)  # type: Dict[str, bottle.FileUpload]
 
-        if not files:
+        if not files or params.get('del_image'):
             res['img'] = None
 
         else:
@@ -128,10 +135,121 @@ def new_post():
     return admin_temp('new_blog', "Новый пост в блоге")
 
 
+"""NOVATOR"""
+DOC_TYPES = {
+    'pdf': 'pdf',
+    'zip': 'archive',
+    'msword': 'word',
+    'vnd.openxmlformats-officedocument.wordprocessingml.document': 'word'
+}
+
+
+@admin_route('/novatorweb')
+def admin_novator():
+    return admin_temp('novator', "NovatorWEB", directions=directions)
+
+
+@admin_route('/novatorweb/delete')
+def delete_direction():
+    direction_id = request.query.id
+    direction_ids = list(map(lambda x: x["name"], directions))
+    if not direction_id or direction_id not in direction_ids:
+        alert = Alert("Такого направления не существует", Alert.DANGER)
+        return redirect('/admin/novatorweb', alert=alert)
+
+    del directions[direction_ids.index(direction_id)]
+    dump(directions, open(DIRECTIONS_FILE, 'w'), ensure_ascii=False, indent=2)
+    return redirect('/admin/novatorweb', alert=Alert("Направление успешно удалено"))
+
+
+@admin_route('/novatorweb/new', method=[GET, POST])
+def new_direction():
+    if request.method == POST:
+        params = dict(request.params)
+        if params['name'] in map(lambda x: x["name"], directions):
+
+            return redirect('/admin/novatorweb/new', alert=Alert(
+                "Направление с таким именем (%s) уже существует! Попробуйте другое" % params['name'],
+                Alert.DANGER
+            ))
+        res = {"name": params['name'], 'video': params.get('video') or None}
+        print(res)
+        files = dict(request.files)  # type: Dict[str, bottle.FileUpload]
+        img, doc = files.get('image'), files.get('doc')
+
+        if not img or params.get('del_image'):
+            res['img'] = None
+
+        else:
+            image_name = params['name'] + '.' + img.filename.rsplit('.', 1)[-1]
+            img.save('./public/images/novator/' + image_name, True)
+
+            res['img'] = image_name
+
+        if params.get('video'):
+            res['video'] = params.get('video')
+
+        doc_name = params['name'] + '.' + doc.filename.rsplit('.', 1)[-1]
+        doc.save('./public/novator/' + doc_name, True)
+        res['doc'] = doc_name
+        res['doc_type'] = DOC_TYPES.get(doc.content_type.split('/')[-1], 'file-alt')
+
+        directions.append(res)
+        dump(directions, open(DIRECTIONS_FILE, 'w'), ensure_ascii=False, indent=2)
+        return redirect('/admin/novatorweb', alert=Alert('Направление успешно создано!'))
+
+    return admin_temp('new_direction', "Новое направление")
+
+
+@admin_route("/novatorweb/edit", method=[GET, POST])
+def edit_direction():
+    direction_id = request.query.id
+    direction_ids = list(map(lambda x: x["name"], directions))
+
+    if not direction_id or direction_id not in direction_ids:
+        alert = Alert("Такого направления не существует", Alert.DANGER)
+        return redirect('/admin/novatorweb', alert=alert)
+
+    direction = directions[direction_ids.index(direction_id)]
+
+    if request.method == POST:
+        params = dict(request.params)
+        res = {"name": params['name']}
+        files = dict(request.files)  # type: Dict[str, bottle.FileUpload]
+        img, doc = files.get('image'), files.get('doc')
+
+        if params.get('del_image'):
+            res['img'] = None
+
+        elif not img:
+            res['img'] = direction.get('img')
+
+        else:
+            image_name = params['name'] + '.' + img.filename.rsplit('.', 1)[-1]
+            img.save('./public/images/novator/' + image_name, True)
+            res['img'] = image_name
+
+        if doc:
+            doc_name = params['name'] + '.' + doc.filename.rsplit('.', 1)[-1]
+            doc.save('./public/novator/' + doc_name, True)
+            res['doc'] = doc_name
+            res['doc_type'] = DOC_TYPES.get(doc.content_type.split('/')[-1], 'file-alt')
+        else:
+            res['doc'] = direction.get('doc')
+            res['doc_type'] = direction.get('doc_type')
+
+        if params.get('video', direction.get('video')):
+            res['video'] = params.get('video', direction.get('video'))
+
+        directions[direction_ids.index(direction_id)] = res
+        dump(directions, open(DIRECTIONS_FILE, 'w'), ensure_ascii=False, indent=2)
+        return redirect('/admin/novatorweb',
+                        alert=Alert('Направление "%s" успешно отредактировано!' % direction['name']))
+
+    return admin_temp('new_direction', "Редактирование направления", direction=direction)
+
+
 # #   MAIN   # #
-BLOG_POSTS = 7
-
-
 @route("/")
 def main_page():
     return template(
@@ -166,6 +284,11 @@ def blog_post(post=""):
     return template('blog_post', p[0]['title'] + " (Блог)", **p[0])
 
 
+@route('/novatorweb')
+def novator():
+    return template('novatorweb', "NovatorWEB", directions=directions)
+
+
 @route(ADMIN_LOGIN_ROUTE, method=["GET", "POST"])
 def login():
     alert = None
@@ -196,7 +319,10 @@ def logout():
 
 @route("/<file:path>")
 def static(file):
-    return bottle.static_file(file, "./public")
+    f = bottle.static_file(file, "./public")
+    if f.status_code == 404:
+        return bottle.HTTPError(404, "Страница или файл '/%s' не найдена!" % file)
+    return f
 
 
 if __name__ == '__main__':

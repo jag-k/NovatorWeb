@@ -1,9 +1,16 @@
 [
   {
     "title":"Заголовок",
-    "img":"Заголовок.jpg",
+    "img":null,
     "raw_content":"CSacsa",
     "content":"<p>CSacsa<\/p>",
     "short":"CSacsa"
+  },
+  {
+    "title":"asd",
+    "img":null,
+    "raw_content":"asd",
+    "content":"<p>asd<\/p>",
+    "short":"asd"
   }
 ]
