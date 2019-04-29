@@ -13,3 +13,11 @@
   </div>
   % end
 </div>
+
+% if competition:
+<h4 class="d-bloc text-center mt-5">Положение о конкурсе</h4>
+<a href="/{{competition['name']}}" class="d-block mx-auto text-center my-4 text-gradient" download="{{competition['name']}}">
+  <i class="fas fa-file-{{competition['type']}} fa-5x d-block"></i>
+  <span class="text-center">{{competition['name']}}</span>
+</a>
+% end

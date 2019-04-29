@@ -1,0 +1,10 @@
+<h2 class="m-4 mx-auto text-center">{{name}}</h2>
+% if get('video'):
+  <div class="embed-responsive embed-responsive-21by9 embed-responsive-item">
+    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{video}}" allowfullscreen></iframe>
+  </div>
+% end
+<a href="/novator/{{doc}}" class="d-block mx-auto text-center my-4 text-gradient" download="{{doc}}">
+  <i class="fas fa-file-{{doc_type}} fa-5x d-block"></i>
+  <span class="text-center">{{doc}}</span>
+</a>

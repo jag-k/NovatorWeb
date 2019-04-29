@@ -7,7 +7,7 @@ body {
   min-height: 100vh;
 }
 
-.gradient-text {
+.text-gradient {
   background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

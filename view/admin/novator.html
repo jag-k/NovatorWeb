@@ -49,7 +49,7 @@
 </div>
 
 <h4>Таймер окончания приёма заявок</h4>
-<form action="/novator/timer" method="post" class="mb-4">
+<form action="/admin/novatorweb/timer" method="post" class="mb-4">
   <div class="form-group">
     <label for="date">Дата окончания</label>
     <input type="date" class="form-control" id="date" name="date" aria-describedby="emailHelp" placeholder="Дата" required>
@@ -62,14 +62,14 @@
 </form>
 
 <h4>Файл положения о конкурсе</h4>
-<form action="/novator/competition" method="POST" enctype="multipart/form-data">
+<form action="/admin/novatorweb/competition" method="POST" enctype="multipart/form-data">
 
   <label for="competition">Положение</label>
   <div class="input-group mb-3">
     <div class="custom-file">
       <input type="file" class="custom-file-input" name="doc" id="competition" accept="application/zip,application/pdf,application/msword" onchange="loadFile(event, this)" {{'' if get('competition') else 'required'}}>
       <label class="custom-file-label" for="competition" data-browse="Выберите документ">
-        {{competition if get('competition') else 'Документ о положении'}}
+        {{competition['name'] if get('competition') else 'Документ о положении'}}
       </label>
     </div>
   </div>

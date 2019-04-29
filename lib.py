@@ -1,4 +1,5 @@
 # /usr/bin/python3
+import os
 from functools import wraps
 from os.path import join
 from hashlib import pbkdf2_hmac
@@ -115,6 +116,14 @@ except FileNotFoundError:
     with open(DIRECTIONS_FILE, 'w') as file:
         file.write('[]')
     directions = load(open(DIRECTIONS_FILE))  # type: List[Dict[str, str]]
+
+COMPETITION_FILE = "data/competition.json"
+try:
+    competition = load(open(COMPETITION_FILE))  # type: Dict[str, str]
+except FileNotFoundError:
+    with open(COMPETITION_FILE, 'w') as file:
+        file.write('{}')
+    competition = load(open(COMPETITION_FILE))  # type: Dict[str, str]
 
 
 # #   MAIN   # #

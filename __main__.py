@@ -146,7 +146,7 @@ DOC_TYPES = {
 
 @admin_route('/novatorweb')
 def admin_novator():
-    return admin_temp('novator', "NovatorWEB", directions=directions)
+    return admin_temp('novator', "NovatorWEB", directions=directions, competition=competition)
 
 
 @admin_route('/novatorweb/delete')
@@ -192,7 +192,7 @@ def new_direction():
         doc_name = params['name'] + '.' + doc.filename.rsplit('.', 1)[-1]
         doc.save('./public/novator/' + doc_name, True)
         res['doc'] = doc_name
-        res['doc_type'] = DOC_TYPES.get(doc.content_type.split('/')[-1], 'file-alt')
+        res['doc_type'] = DOC_TYPES.get(doc.content_type.split('/')[-1], 'alt')
 
         directions.append(res)
         dump(directions, open(DIRECTIONS_FILE, 'w'), ensure_ascii=False, indent=2)
@@ -233,7 +233,7 @@ def edit_direction():
             doc_name = params['name'] + '.' + doc.filename.rsplit('.', 1)[-1]
             doc.save('./public/novator/' + doc_name, True)
             res['doc'] = doc_name
-            res['doc_type'] = DOC_TYPES.get(doc.content_type.split('/')[-1], 'file-alt')
+            res['doc_type'] = DOC_TYPES.get(doc.content_type.split('/')[-1], 'alt')
         else:
             res['doc'] = direction.get('doc')
             res['doc_type'] = direction.get('doc_type')
@@ -247,6 +247,17 @@ def edit_direction():
                         alert=Alert('Направление "%s" успешно отредактировано!' % direction['name']))
 
     return admin_temp('new_direction', "Редактирование направления", direction=direction)
+
+
+@admin_route('/novatorweb/competition', method=POST)
+def admin_competition():
+    file = request.files.get('doc')  # type: bottle.FileUpload
+    name = 'Положение' + '.' + file.filename.rsplit('.', 1)[-1]
+    file.save('./public/' + name, True)
+    competition['type'] = DOC_TYPES.get(file.content_type.split('/')[-1], 'alt')
+    competition['name'] = name
+    dump(competition, open(COMPETITION_FILE, 'w'), ensure_ascii=False, indent=2)
+    return redirect('/admin/novatorweb', alert=Alert("Положение успешно загруженно!"))
 
 
 # #   MAIN   # #
@@ -286,7 +297,18 @@ def blog_post(post=""):
 
 @route('/novatorweb')
 def novator():
-    return template('novatorweb', "NovatorWEB", directions=directions)
+    return template('novatorweb', "NovatorWEB", directions=directions, competition=competition)
+
+
+@route('/novatorweb/<direction_id>')
+def novator_direction(direction_id):
+    direction_ids = list(map(lambda x: x["name"], directions))
+
+    if not direction_id or direction_id not in direction_ids:
+        alert = Alert("Такого направления не существует", Alert.DANGER)
+        return redirect('/novatorweb', alert=alert)
+    direction = directions[direction_ids.index(direction_id)]
+    return template('novator_direction', direction['name'] + " (NowatorWEB)", **direction)
 
 
 @route(ADMIN_LOGIN_ROUTE, method=["GET", "POST"])
