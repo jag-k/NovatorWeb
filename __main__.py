@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from lib import *
 from markdown import markdown
 
@@ -28,8 +26,6 @@ def admin_page():
     paths = ["/" + p[len(images_path):] for p, d, f in os.walk(images_path)]
     images = [{"path": "/" + p[len(images_path):] + '/' + i, "name": i} for p, d, f in os.walk(images_path)
               for i in filter(lambda x: x != '__init__.py', f)]
-
-    pprint(images)
 
     user_path = params.get('path', '/').strip('/')  # type: str
     file_path = os.path.join(images_path, user_path)
@@ -216,7 +212,6 @@ def new_direction():
                 Alert.DANGER
             ))
         res = {"name": params['name'], 'video': params.get('video') or None}
-        print(res)
         files = dict(request.files)  # type: Dict[str, bottle.FileUpload]
         img, doc = files.get('image'), files.get('doc')
 
@@ -306,20 +301,17 @@ def admin_competition():
 @admin_route('/novatorweb/timer', method=POST)
 def novator_timer():
     data = request.params  # type: bottle.FormsDict
-    if data.get('date'):
-        timer['endYear'], timer['endMonth'], timer['endDay'] = map(int, data.get('date').split('-'))
-        timer['raw_date'] = data.get('date')
+    timer['endYear'], timer['endMonth'], timer['endDay'] = map(int, data.get('date').split('-'))
+    timer['raw_date'] = data.get('date')
 
-    if data.get('time'):
-        timer['endHour'], timer['endMinutes'] = map(int, data.get('time').split(':'))
-        timer['raw_time'] = data.get('time')
+    timer['endHour'], timer['endMinutes'] = map(int, data.get('time').split(':'))
+    timer['raw_time'] = data.get('time')
 
-    pprint(timer)
     dump(timer, open(TIMER_FILE, 'w'), ensure_ascii=False, indent=2)
     return redirect('/admin/novatorweb',
                     alert=Alert(
                         "Таймер успешно установлен установлен на "
-                        "%(endDay)s-%(endMonth)s-%(endYear)s %(endHour)s:%(endMinutes)s" % timer
+                        "%(endDay).2d-%(endMonth).2d-%(endYear).4d %(endHour).2d:%(endMinutes).2d" % timer
                     ))
 
 
