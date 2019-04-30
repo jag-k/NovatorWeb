@@ -116,3 +116,8 @@ body {
 .sub{
     font-size: 25px;
 }
+
+.switch-danger.custom-control-input:checked~.custom-control-label::before {
+  border-color: var(--danger) !important;
+  background-color: var(--danger) !important;
+}

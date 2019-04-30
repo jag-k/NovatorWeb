@@ -24,6 +24,19 @@ function loadingButton(btn) {
             'Загрузка...'
     }
 }
+let del_data = {};
+function del_selector(elem) {
+    let f = elem.getAttribute('for');
+    let form = document.getElementById(f);
+    if (elem.checked) {
+        del_data[f] = form.innerHTML;
+        form.innerHTML = '';
+        elem.name = elem.getAttribute('_name');
+    } else {
+        form.innerHTML = del_data[f];
+        elem.name = '';
+    }
+}
 
 document.querySelectorAll('button.btn[type=submit]').forEach(function (elem) {
     elem.setAttribute('onclick', "loadingButton(this)")

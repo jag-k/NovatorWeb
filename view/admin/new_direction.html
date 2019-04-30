@@ -1,6 +1,6 @@
 % direction = get('direction', {})
 <h3>Новое направление</h3>
-<form action="/admin/novatorweb/{{'edit?id=' + direction.get('name') if direction else 'new'}}" method="POST" enctype="multipart/form-data">
+<form id="direction" action="/admin/novatorweb/{{'edit?id=' + direction.get('name') if direction else 'new'}}" method="POST" enctype="multipart/form-data">
   <div class="form-group mb-4">
     <label for="name">Название</label>
     <input type="text" class="form-control" id="name" name="name" placeholder="Название направления" value="{{direction.get('name', '')}}" autocomplete="off" required>
@@ -8,12 +8,12 @@
 
   <div class="from-group mb-2">
     <div class="custom-control custom-switch">
-      <input type="checkbox" class="custom-control-input" id="del_image" name="del_image">
+      <input type="checkbox" form="direction" class="custom-control-input switch-danger" id="del_image" _name="del_image" for="image-form" onchange="del_data(this)">
       <label class="custom-control-label" for="del_image">Удалить/не загружать изображение к направлению</label>
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="image-form">
     <label for="image">Иконка направления</label>
     <div class="input-group">
       <div class="custom-file">

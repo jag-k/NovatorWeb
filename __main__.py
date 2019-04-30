@@ -22,17 +22,58 @@ def blog_short(t):
 # #   ADMIN ROUTING   # #
 @admin_route("/", method=[GET, POST])
 def admin_page():
+    params = request.params  # type: bottle.FormsDict
     alert = None
+    images_path = './public/images/'
+    paths = ["/" + p[len(images_path):] for p, d, f in os.walk(images_path)]
+    images = [{"path": "/" + p[len(images_path):] + '/' + i, "name": i} for p, d, f in os.walk(images_path)
+              for i in filter(lambda x: x != '__init__.py', f)]
+
+    pprint(images)
+
+    user_path = params.get('path', '/').strip('/')  # type: str
+    file_path = os.path.join(images_path, user_path)
+
     if request.method == POST:
-        files = []
-        for file in request.files.values():   # type: bottle.FileUpload
-            file.save("./public/images/" + file.raw_filename, True)
-            files.append(file.raw_filename)
-        return redirect("/admin", alert=Alert("Файл(ы) (%s) успешно сохранен(ы)" % ', '.join(files)))
+        if request.params.get('del_image'):
+            if os.path.isfile(file_path) and file_path.split('/')[-1] != '__init__.py':
+                try:
+                    os.remove(file_path)
+                except BaseException:
+                    return redirect('/admin',  alert=Alert("Во время удаления файла произошла ошибка", Alert.WARNING))
+            else:
+                return redirect('/admin', alert=Alert("Такого файла не сушествует!", Alert.DANGER))
+            return redirect('/admin', alert=Alert("Файл \"/images/%s\" был успешно удалён!" % user_path))
+        if not os.path.isdir(file_path) or not os.path.isdir(file_path.rsplit('/', 1)[0]):
+            try:
+                os.makedirs(file_path)
+            except BaseException:
+                return redirect('/admin', alert=Alert("Путь указан неверно!", Alert.DANGER))
+
+        file = request.files.get("image")   # type: bottle.FileUpload
+        file.save(os.path.join(file_path, file.raw_filename), True)
+        return redirect("/admin", alert=Alert("Файл (%s) успешно сохранен(ы)" % file.raw_filename))
     return admin_temp(
         "main",
-        alert=alert
+        alert=alert,
+        paths=paths,
+        images=images
     )
+
+
+@admin_route("/delete_image")
+def admin_delete():
+    images_path = './public/images/'
+    path = request.params.get('path', '/').strip('/')  # type: str
+    file_path = os.path.join(images_path, path)
+    if path:
+        if os.path.isfile(file_path) and file_path.split('/')[-1] != '__init__.py':
+            try:
+                os.remove(file_path)
+            except BaseException:
+                return redirect('/admin',  alert=Alert("Во время удаления файла произошла ошибка", Alert.WARNING))
+            return redirect('/admin', alert=Alert("Файл \"/images/%s\" был успешно удалён!" % path))
+    return redirect('/admin', alert=Alert("Такого файла не сушествует!", Alert.DANGER))
 
 
 """BLOG"""
@@ -57,7 +98,7 @@ def delete_post():
     return redirect('/admin/blog', alert=Alert("Пост успешно удалён"))
 
 
-@admin_route("/blog/edit", method=[GET, POST])
+@admin_route("/blog/edit", method=[GET, POST, DELETE])
 def edit_post():
     post_id = request.query.id
     post_ids = list(map(lambda x: x["title"], posts))
@@ -68,12 +109,12 @@ def edit_post():
 
     post = posts[post_ids.index(post_id)]
 
-    if request.method == POST:
+    if request.method in (POST, DELETE):
         params = dict(request.params)
         res = {"title": params['title']}
         files = dict(request.files)  # type: Dict[str, bottle.FileUpload]
 
-        if params.get('del_image'):
+        if params.get('del_image') or request.method == DELETE:
             res['img'] = None
 
         elif not files:
@@ -82,7 +123,7 @@ def edit_post():
         else:
             file = files['image']
             filename = params['title'] + '.' + file.filename.rsplit('.', 1)[-1]
-            file.save('./public/images/' + filename, overwrite=True)
+            file.save('./public/images/blog/' + filename, overwrite=True)
 
             res['img'] = filename
 
@@ -118,7 +159,7 @@ def new_post():
         else:
             file = files['image']
             filename = params['title'] + '.' + file.filename.rsplit('.', 1)[-1]
-            file.save('./public/images/' + filename, overwrite=True)
+            file.save('./public/images/blog/' + filename, overwrite=True)
 
             res['img'] = filename
 

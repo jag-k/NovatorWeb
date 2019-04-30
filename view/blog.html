@@ -7,7 +7,7 @@
   <div class="col-sm-6 mb-3">
     <div class="card mb-3 news-card">
       % if i['img']:
-      <img src="images/{{i['img']}}" class="card-img-top" alt="{{i['title']}}">
+      <img src="/images/blog/{{i['img']}}" class="card-img-top" alt="{{i['title']}}">
       % else:
         % include('view/svg_gradient.html', classes="card-img-top", *args, **kwargs)
       % end

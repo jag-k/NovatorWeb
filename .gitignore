@@ -166,3 +166,4 @@ venv.bak/
 .mypy_cache/
 /public/images/*
 /public/novator/*
+!/public/images/*/__init__.py
