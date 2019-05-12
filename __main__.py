@@ -337,7 +337,7 @@ def main_page():
 
 @route("/blog")
 def blog():
-    cur_page = request.query.getunicode("from")
+    cur_page = request.query.getunicode("page")
     max_pages = len(posts) // BLOG_POSTS + bool(len(posts) % BLOG_POSTS)
     if cur_page is not None and (not (cur_page.isdigit() and int(cur_page) > 0)) or cur_page == "1":
         return redirect('/blog')
