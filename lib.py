@@ -73,6 +73,9 @@ def is_hash_admin(h):
 
 
 ADMINS_FILE = './data/admins.json'
+if not os.path.isfile(ADMINS_FILE):
+    with open(ADMINS_FILE, "w") as file:
+        file.write("[]")
 ADMINS = load(open(ADMINS_FILE))  # type: List[Dict[str, str]]
 for i in ADMINS:
     i['hash'] = hash_admin(**i)
